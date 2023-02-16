@@ -6,14 +6,14 @@ const Order = require('../models/order');
 // Add product
 adminRouter.post('/admin/add-product', admin, async(req, res) =>{
     try {
-        const {name, brand, dosageForm, strength, unit, availableAmount, images, batchNumber, expiryDate, price, category,} = req.body;
+        const {name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, price, category,} = req.body;
         let product = new Product({
             name,
             brand,
             dosageForm,
             strength,
             unit,
-            availableAmount,
+            quantity,
             batchNumber,
             expiryDate,
             price,

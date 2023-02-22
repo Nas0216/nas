@@ -19,6 +19,14 @@ const userSchema = mongoose.Schema({
             message: "Please enter a valid email address",
         },
     },
+    pharmacyName: {
+        required: true,
+        type: String,
+    },
+    tinNumber: {
+        required: true,
+        type: Number,
+    },
     password: {
         required: true,
         type: String,

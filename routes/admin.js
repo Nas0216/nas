@@ -3,6 +3,7 @@ const adminRouter = express.Router();
 const admin = require ('../middlewares/admin');
 const {Product} = require('../models/product');
 const Order = require('../models/order');
+const User = require('../models/user');
 // Add product
 adminRouter.post('/admin/add-product', admin, async(req, res) =>{
     try {
@@ -26,13 +27,38 @@ adminRouter.post('/admin/add-product', admin, async(req, res) =>{
         res.status(500).json({error: e.message})
     }
 } );
-
-// Get all your products
+ 
+//update-product
+adminRouter.put('/admin/update-product', admin, async (req, res) => {
+    try {
+        
+        const {id,name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, price, category,} = req.body;
+       let product = await Product.findByIdAndUpdate(id); 
+       product.name = name;
+       product.brand = brand;
+       product.dosageForm = dosageForm;
+       product.strength = strength;
+       product.unit = unit;
+       product.quantity = quantity;
+       if(images!=null){
+       product.images  = images;
+       }
+       product.expiryDate = expiryDate;
+       product.batchNumber = batchNumber;
+       product.category = category;
+       product.price = price;
+       product = await product.save();
+        res.json(product);
+    } catch (e) {
+        res.status(500).json({error: e.message});
+    }
+    
+});
 // /admin/get-products
 
 adminRouter.get("/admin/get-products", admin, async (req, res) =>{
     try {
-        const products = await Product.find({});
+        const products = await Product.find({}).sort({$natural: -1});
         res.json(products);
     } catch (e) {
         res.status(500).json({error: e.message});
@@ -50,9 +76,20 @@ adminRouter.post('/admin/delete-product', admin, async (req, res) => {
     
 });
 
+// /admin/get-users
+adminRouter.get('/admin/get-users', admin, async (req,res) => {
+    try {
+        const users = await User.find({});
+        res.json(users);
+    } catch (e) {
+        res.status(500).json({error: e.message});
+    }
+});
+
+
 adminRouter.get('/admin/get-orders', admin, async (req,res) => {
     try {
-        const orders = await Order.find({});
+        const orders = await Order.find({}).sort({$natural: -1});
         res.json(orders);
     } catch (e) {
         res.status(500).json({error: e.message});
@@ -83,19 +120,29 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
         }
 
         // Category Wise Order Fetching
-        let AntibacterialsEarnings = await fetchCategoryWiseProduct("Antibacterials");
-        let AntifungalEarnings = await fetchCategoryWiseProduct("Antifungal");
-        let NSAIDEarnings = await fetchCategoryWiseProduct("NSAID");
-        let CVSEarnings = await fetchCategoryWiseProduct("CVS");
-        let CNSEarnings = await fetchCategoryWiseProduct("CNS");
-        
+        let AntimicrobialEarnings = await fetchCategoryWiseProduct("Antimicrobials");
+        let GIEarnings = await fetchCategoryWiseProduct("GI Drugs");
+        let AntifungalEarnings = await fetchCategoryWiseProduct("Antifungals");
+        let AnalgesicEarnings = await fetchCategoryWiseProduct("Analgesics");
+        let CVEarnings = await fetchCategoryWiseProduct("CV Drugs");
+        let CNSEarnings = await fetchCategoryWiseProduct("CNS Drugs");
+        let RespiratoryEarnings = await fetchCategoryWiseProduct("Respiratory Drugs");
+        let EndocrineEarnings = await fetchCategoryWiseProduct("Endocrine Drugs");
+        let DermatologicalEarnings = await fetchCategoryWiseProduct("Dermatologicals");
+        let SupplyEarnings = await fetchCategoryWiseProduct("Supplies");
+
         let earnings = {
             totalEarnings,
-            AntibacterialsEarnings,
+            AntimicrobialEarnings,
+            GIEarnings,
             AntifungalEarnings,
-            NSAIDEarnings,
-            CVSEarnings,
+            AnalgesicEarnings,
+            CVEarnings,
             CNSEarnings,
+            RespiratoryEarnings,
+            EndocrineEarnings,
+            DermatologicalEarnings,
+            SupplyEarnings,
         };
 
         res.json(earnings);

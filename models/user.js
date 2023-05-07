@@ -8,16 +8,16 @@ const userSchema = mongoose.Schema({
         trim: true,
     },
     email: {
-        required: true,
         type: String,
         trim: true,
-        validate: {
-            validator: (value) => {
-                const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-                return value.match(re);
-            },
-            message: "Please enter a valid email address",
-        },
+        default: '',
+        // validate: {
+        //     validator: (value) => {
+        //         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        //         return value.match(re);
+        //     },
+        //     message: "Please enter a valid email address",
+        // },
     },
     pharmacyName: {
         required: true,
@@ -25,16 +25,20 @@ const userSchema = mongoose.Schema({
     },
     tinNumber: {
         required: true,
-        type: Number,
+        type: String,
+    },
+    phoneNumber: {
+        required: true,
+        type: String,
     },
     password: {
         required: true,
         type: String,
         validate: {
             validator: (value) => {
-                return value.length > 6;
+                return value.length != 4;
             },
-            message: "Please enter atleast 6 characters",
+            message: "Please enter 4 character pin",
         },
     },
     address: {

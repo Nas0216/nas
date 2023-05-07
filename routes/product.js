@@ -21,6 +21,7 @@ productRouter.get("/api/products/search/:name", auth, async (req, res) => {
     });
 
     res.json(products);
+    print (products.body);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -50,6 +51,9 @@ res.json(product);
   }
 });
 
+
+
+
 productRouter.get('/api/deal-of-day',auth, async (req, res) =>{
   try {
     let products = await Product.find({});
@@ -74,6 +78,6 @@ productRouter.get('/api/deal-of-day',auth, async (req, res) =>{
     res.status(500).json({ error: e.message });
     
   }
-})
+}); 
 
 module.exports = productRouter;

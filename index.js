@@ -3,6 +3,7 @@ const express = require("express");
 // Database package
 const mongoose = require('mongoose');  
 const adminRouter = require('./routes/admin');
+mongoose.set('strictQuery', false);
 
 //IMPORT FROM OTHER FILES
 const authRouter = require('./routes/auth');

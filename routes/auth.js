@@ -117,4 +117,46 @@ const hashedPassword = await bcryptjs.hash(password, 8);
     
 });
 
+//update-profile
+
+authRouter.patch('/api/update-profile',auth, async (req, res) => {
+    try {
+        
+        const {phoneNumber,password,tinNumber, address, name,pharmacyName, email} = req.body;
+        
+        
+       let user = await User.findByIdAndUpdate(req.user); 
+       if(name!=null){
+        user.name  = name;
+        }
+        if(phoneNumber!=null){
+            user.phoneNumber  = phoneNumber;
+            }
+            if(pharmacyName!=null){
+                user.pharmacyName  = pharmacyName;
+                }
+                if(tinNumber!=null){
+                    user.tinNumber  = tinNumber;
+                    }
+                    if(password!=null){
+                        const hashedPassword = await bcryptjs.hash(password, 8);
+                        user.password  = hashedPassword;
+                        }
+      
+                        if(email!=null){
+                            user.email  = email;
+                            }
+                            if(address!=null){
+                                user.address  = address;
+                                }
+                                
+       
+       user = await user.save();
+        res.json(user);
+    } catch (e) {
+        res.status(500).json({error: e.message});
+    }
+       
+});
+
 module.exports = authRouter;

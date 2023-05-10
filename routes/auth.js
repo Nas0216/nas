@@ -123,7 +123,7 @@ const hashedPassword = await bcryptjs.hash(password, 8);
 authRouter.patch('/api/update-profile',auth, async (req, res) => {
     try {
         
-        const {phoneNumber,password,tinNumber, address, name,pharmacyName, email} = req.body;
+        const {phoneNumber,password,tinNumber, address, name,pharmacyName, email, documents} = req.body;
         
         
        let user = await User.findByIdAndUpdate(req.user); 
@@ -149,6 +149,9 @@ authRouter.patch('/api/update-profile',auth, async (req, res) => {
                             }
                             if(address!=null){
                                 user.address  = address;
+                                }
+                                if(documents!=null){
+                                    user.documents = documents;
                                 }
                                 
        

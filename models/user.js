@@ -49,6 +49,13 @@ const userSchema = mongoose.Schema({
         type: String,
         default: 'user',
     },
+    verification: {
+        type: String,
+        default: 'unverified',
+    },
+    documents: [{
+        type: String,
+    }],
     cart: [
         {
             product: productSchema,

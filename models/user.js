@@ -56,6 +56,10 @@ const userSchema = mongoose.Schema({
     documents: [{
         type: String,
     }],
+    createdAt: {
+        type: Number,
+        required: true,
+      },
     cart: [
         {
             product: productSchema,

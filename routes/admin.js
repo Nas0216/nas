@@ -165,4 +165,34 @@ async function fetchCategoryWiseProduct(category){
     return earnings;
 }
 
+adminRouter.put('/admin/update-user-verification', admin, async (req, res) => {
+    try {
+        
+        const {id,verification} = req.body;
+       let user = await User.findByIdAndUpdate(id); 
+       user.verification = verification;
+       
+       user = await user.save();
+        res.json(user);
+    } catch (e) {
+        res.status(500).json({error: e.message});
+    }
+    
+});
+
+
+
+// Delete User
+adminRouter.post('/admin/delete-user', admin, async (req, res) => {
+    try {
+        
+        const {id} = req.body;
+       let user = await User.findByIdAndDelete(id);
+       
+        res.json(user);
+    } catch (e) {
+        res.status(500).json({error: e.message});
+    }
+    
+});
 module.exports = adminRouter;

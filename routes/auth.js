@@ -29,6 +29,7 @@ const hashedPassword = await bcryptjs.hash(password, 8);
         documents,
         phoneNumber,
         address,
+        createdAt: new Date().getTime(),
     })
     user = await user.save();
     res.json(user); 
@@ -46,6 +47,7 @@ authRouter.post("/api/signin", async (req, res) =>{
     try {
         const {tinNumber, password} = req.body;
         const user = await User.findOne({tinNumber});
+        
         if(!user) {
             return res
             .status(400)
@@ -57,6 +59,11 @@ authRouter.post("/api/signin", async (req, res) =>{
             .status(400)
             .json({msg: "Incorrect Password"});
         }
+        if(user.verification!='verified') {
+            return res
+            .status(400)
+            .json({msg: 'Please wait until we verify your account!!'})
+            }
         const token = jwt.sign({id: user._id}, "passwordKey");
         res.json({token, ...user._doc});
     } catch (e){

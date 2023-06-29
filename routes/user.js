@@ -143,7 +143,7 @@ userRouter.get('/api/orders/me', auth,async(req, res) => {
 
 userRouter.get('/api/get-products', auth, async (req, res) =>{
     try {
-      const products = await Product.find({}).sort({$natural: -1});
+      const products = await Product.find({quantity:{$gt:0}}).sort({$natural: -1});
       res.json(products);
   } catch (e) {
       res.status(500).json({error: e.message});

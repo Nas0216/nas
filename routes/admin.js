@@ -79,7 +79,7 @@ adminRouter.post('/admin/delete-product', admin, async (req, res) => {
 // /admin/get-users
 adminRouter.get('/admin/get-users', admin, async (req,res) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({}).sort({$natural: -1});
         res.json(users);
     } catch (e) {
         res.status(500).json({error: e.message});

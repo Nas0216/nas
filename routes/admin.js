@@ -4,7 +4,9 @@ const admin = require ('../middlewares/admin');
 const {Product} = require('../models/product');
 const Order = require('../models/order');
 const User = require('../models/user');
+
 // Add product
+
 adminRouter.post('/admin/add-product', admin, async(req, res) =>{
     try {
         const {name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, price, category,} = req.body;
@@ -29,9 +31,9 @@ adminRouter.post('/admin/add-product', admin, async(req, res) =>{
 } );
  
 //update-product
+
 adminRouter.put('/admin/update-product', admin, async (req, res) => {
     try {
-        
         const {id,name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, price, category,} = req.body;
        let product = await Product.findByIdAndUpdate(id); 
        product.name = name;
@@ -52,8 +54,8 @@ adminRouter.put('/admin/update-product', admin, async (req, res) => {
     } catch (e) {
         res.status(500).json({error: e.message});
     }
-    
 });
+
 // /admin/get-products
 
 adminRouter.get("/admin/get-products", admin, async (req, res) =>{
@@ -65,6 +67,8 @@ adminRouter.get("/admin/get-products", admin, async (req, res) =>{
     }
 });
 
+// Delete products
+
 adminRouter.post('/admin/delete-product', admin, async (req, res) => {
     try {
         const {id} = req.body;
@@ -72,11 +76,11 @@ adminRouter.post('/admin/delete-product', admin, async (req, res) => {
         res.json(product);
     } catch (e) {
         res.status(500).json({error: e.message});
-    }
-    
+    } 
 });
 
-// /admin/get-users
+// get-users
+
 adminRouter.get('/admin/get-users', admin, async (req,res) => {
     try {
         const users = await User.find({}).sort({$natural: -1});
@@ -86,6 +90,7 @@ adminRouter.get('/admin/get-users', admin, async (req,res) => {
     }
 });
 
+// get-orders
 
 adminRouter.get('/admin/get-orders', admin, async (req,res) => {
     try {
@@ -95,6 +100,8 @@ adminRouter.get('/admin/get-orders', admin, async (req,res) => {
         res.status(500).json({error: e.message});
     }
 });
+
+// change order status
 
 adminRouter.post('/admin/change-order-status', admin, async (req, res) => {
     try {
@@ -108,6 +115,9 @@ adminRouter.post('/admin/change-order-status', admin, async (req, res) => {
     }
     
 });
+
+// analytics
+
 adminRouter.get('/admin/analytics', admin, async (req, res) => {
     try {
         const orders = await Order.find({});
@@ -120,6 +130,7 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
         }
 
         // Category Wise Order Fetching
+
         let AntimicrobialEarnings = await fetchCategoryWiseProduct("Antimicrobials");
         let GIEarnings = await fetchCategoryWiseProduct("GI Drugs");
         let AntifungalEarnings = await fetchCategoryWiseProduct("Antifungals");
@@ -165,6 +176,8 @@ async function fetchCategoryWiseProduct(category){
     return earnings;
 }
 
+// update user verfication
+
 adminRouter.put('/admin/update-user-verification', admin, async (req, res) => {
     try {
         
@@ -180,9 +193,8 @@ adminRouter.put('/admin/update-user-verification', admin, async (req, res) => {
     
 });
 
-
-
 // Delete User
+
 adminRouter.post('/admin/delete-user', admin, async (req, res) => {
     try {
         

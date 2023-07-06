@@ -51,7 +51,7 @@ const userSchema = mongoose.Schema({
     },
     verification: {
         type: String,
-        default: 'unverified',
+        default: 'Unverified',
     },
     documents: [{
         type: String,

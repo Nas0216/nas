@@ -59,7 +59,7 @@ authRouter.post("/api/signin", async (req, res) =>{
             .status(400)
             .json({msg: "Incorrect Password"});
         }
-        if(user.verification!='verified') {
+        if(user.verification!='Verified') {
             return res
             .status(400)
             .json({msg: 'Please wait until we verify your account!!'})

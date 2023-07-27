@@ -9,7 +9,7 @@ const User = require('../models/user');
 
 adminRouter.post('/admin/add-product', admin, async(req, res) =>{
     try {
-        const {name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, price, category,} = req.body;
+        const {name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, cost, price, category,} = req.body;
         let product = new Product({
             name,
             brand,
@@ -19,6 +19,7 @@ adminRouter.post('/admin/add-product', admin, async(req, res) =>{
             quantity,
             batchNumber,
             expiryDate,
+            cost,
             price,
             category,
             images,
@@ -34,7 +35,7 @@ adminRouter.post('/admin/add-product', admin, async(req, res) =>{
 
 adminRouter.put('/admin/update-product', admin, async (req, res) => {
     try {
-        const {id,name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, price, category,} = req.body;
+        const {id,name, brand, dosageForm, strength, unit, quantity, images, batchNumber, expiryDate, cost, price, category,} = req.body;
        let product = await Product.findByIdAndUpdate(id); 
        product.name = name;
        product.brand = brand;
@@ -48,6 +49,7 @@ adminRouter.put('/admin/update-product', admin, async (req, res) => {
        product.expiryDate = expiryDate;
        product.batchNumber = batchNumber;
        product.category = category;
+       product.cost = cost;
        product.price = price;
        product = await product.save();
         res.json(product);
@@ -122,10 +124,12 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
     try {
         const orders = await Order.find({});
         let totalEarnings = 0;
+        let totalCosts =0;
 
         for(let i=0; i<orders.length; i++){
             for (let j=0; j < orders[i].products.length; j++){
                     totalEarnings += orders[i].products[j].quantity * orders[i].products[j].product.price;
+                    totalCosts += orders[i].products[j].quantity * orders[i].products[j].product.cost;
             }
         }
 
@@ -156,7 +160,33 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
             SupplyEarnings,
         };
 
-        res.json(earnings);
+        let AntimicrobialCosts = await fetchCategoryWiseProduct("Antimicrobials");
+        let GICosts = await fetchCategoryWiseProduct("GI Drugs");
+        let AntifungalCosts = await fetchCategoryWiseProduct("Antifungals");
+        let AnalgesicCosts = await fetchCategoryWiseProduct("Analgesics");
+        let CVCosts = await fetchCategoryWiseProduct("CV Drugs");
+        let CNSCosts = await fetchCategoryWiseProduct("CNS Drugs");
+        let RespiratoryCosts = await fetchCategoryWiseProduct("Respiratory Drugs");
+        let EndocrineCosts = await fetchCategoryWiseProduct("Endocrine Drugs");
+        let DermatologicalCosts = await fetchCategoryWiseProduct("Dermatologicals");
+        let SupplyCosts = await fetchCategoryWiseProduct("Supplies");
+
+        let costs = {
+            totalCosts,
+            AntimicrobialCosts,
+            GICosts,
+            AntifungalCosts,
+            AnalgesicCosts,
+            CVCosts,
+            CNSCosts,
+            RespiratoryCosts,
+            EndocrineCosts,
+            DermatologicalCosts,
+            SupplyCosts,
+        };
+        
+
+        res.json(earnings, costs);
     } catch (e) {
         res.status(500).json({error: e.message});
     }
@@ -164,6 +194,7 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
 
 async function fetchCategoryWiseProduct(category){
     let earnings = 0;
+    let costs = 0;
     let categoryOrders = await Order.find({
         "products.product.category": category,
     });
@@ -171,9 +202,12 @@ async function fetchCategoryWiseProduct(category){
     for(let i=0; i<categoryOrders.length; i++){
         for (let j=0; j<categoryOrders[i].products.length; j++){
                 earnings += categoryOrders[i].products[j].quantity * categoryOrders[i].products[j].product.price;
+                costs += categoryOrders[i].products[j].quantity * categoryOrders[i].products[j].product.cost;
         }
     }
-    return earnings;
+    return earnings, costs;
+     
+    
 }
 
 // update user verfication

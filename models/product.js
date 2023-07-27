@@ -42,6 +42,10 @@ const productSchema = mongoose.Schema({
     unit: {
         type: String,
     },
+    cost: {
+        type: Number,
+        required: true,
+    },
     price: {
         type: Number,
         required: true,

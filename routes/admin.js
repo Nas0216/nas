@@ -186,7 +186,7 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
         };
         
 
-        res.json(earnings, costs);
+        res.json({earnings:earnings, costs:costs});
     } catch (e) {
         res.status(500).json({error: e.message});
     }

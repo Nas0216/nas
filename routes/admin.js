@@ -135,16 +135,16 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
 
         // Category Wise Order Fetching
 
-        let AntimicrobialEarnings = await fetchCategoryWiseProduct("Antimicrobials");
-        let GIEarnings = await fetchCategoryWiseProduct("GI Drugs");
-        let AntifungalEarnings = await fetchCategoryWiseProduct("Antifungals");
-        let AnalgesicEarnings = await fetchCategoryWiseProduct("Analgesics");
-        let CVEarnings = await fetchCategoryWiseProduct("CV Drugs");
-        let CNSEarnings = await fetchCategoryWiseProduct("CNS Drugs");
-        let RespiratoryEarnings = await fetchCategoryWiseProduct("Respiratory Drugs");
-        let EndocrineEarnings = await fetchCategoryWiseProduct("Endocrine Drugs");
-        let DermatologicalEarnings = await fetchCategoryWiseProduct("Dermatologicals");
-        let SupplyEarnings = await fetchCategoryWiseProduct("Supplies");
+        let AntimicrobialEarnings = (await fetchCategoryWiseProduct("Antimicrobials")).earnings;
+        let GIEarnings = (await fetchCategoryWiseProduct("GI Drugs")).earnings;
+        let AntifungalEarnings = (await fetchCategoryWiseProduct("Antifungals")).earnings;
+        let AnalgesicEarnings = (await fetchCategoryWiseProduct("Analgesics")).earnings;
+        let CVEarnings = (await fetchCategoryWiseProduct("CV Drugs")).earnings;
+        let CNSEarnings = (await fetchCategoryWiseProduct("CNS Drugs")).earnings;
+        let RespiratoryEarnings = (await fetchCategoryWiseProduct("Respiratory Drugs")).earnings;
+        let EndocrineEarnings = (await fetchCategoryWiseProduct("Endocrine Drugs")).earnings;
+        let DermatologicalEarnings = (await fetchCategoryWiseProduct("Dermatologicals")).earnings;
+        let SupplyEarnings = (await fetchCategoryWiseProduct("Supplies")).earnings;
 
         let earnings = {
             totalEarnings,
@@ -160,16 +160,16 @@ adminRouter.get('/admin/analytics', admin, async (req, res) => {
             SupplyEarnings,
         };
 
-        let AntimicrobialCosts = await fetchCategoryWiseProduct("Antimicrobials");
-        let GICosts = await fetchCategoryWiseProduct("GI Drugs");
-        let AntifungalCosts = await fetchCategoryWiseProduct("Antifungals");
-        let AnalgesicCosts = await fetchCategoryWiseProduct("Analgesics");
-        let CVCosts = await fetchCategoryWiseProduct("CV Drugs");
-        let CNSCosts = await fetchCategoryWiseProduct("CNS Drugs");
-        let RespiratoryCosts = await fetchCategoryWiseProduct("Respiratory Drugs");
-        let EndocrineCosts = await fetchCategoryWiseProduct("Endocrine Drugs");
-        let DermatologicalCosts = await fetchCategoryWiseProduct("Dermatologicals");
-        let SupplyCosts = await fetchCategoryWiseProduct("Supplies");
+        let AntimicrobialCosts = (await fetchCategoryWiseProduct("Antimicrobials")).costs;
+        let GICosts = (await fetchCategoryWiseProduct("GI Drugs")).costs;
+        let AntifungalCosts = (await fetchCategoryWiseProduct("Antifungals")).costs;
+        let AnalgesicCosts = (await fetchCategoryWiseProduct("Analgesics")).costs;
+        let CVCosts = (await fetchCategoryWiseProduct("CV Drugs")).costs;
+        let CNSCosts = (await fetchCategoryWiseProduct("CNS Drugs")).costs;
+        let RespiratoryCosts = (await fetchCategoryWiseProduct("Respiratory Drugs")).costs;
+        let EndocrineCosts = (await fetchCategoryWiseProduct("Endocrine Drugs")).costs;
+        let DermatologicalCosts = (await fetchCategoryWiseProduct("Dermatologicals")).costs;
+        let SupplyCosts = (await fetchCategoryWiseProduct("Supplies")).costs;
 
         let costs = {
             totalCosts,
